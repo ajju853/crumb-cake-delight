@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { products } from '@/data/products';
 import { useApp } from '@/contexts/AppContext';
 import NotFound from '@/pages/NotFound';
+import { CartItem } from '@/types';
 
 interface ProductDetailProps {
   specialEdition?: boolean;
@@ -92,7 +93,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ specialEdition = false })
           price: 2500,
           image: cake.src,
           quantity: quantity
-        });
+        } as CartItem);
       };
       
       return (
@@ -271,7 +272,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ specialEdition = false })
       price: product.price,
       image: product.image,
       quantity: quantity
-    });
+    } as CartItem);
   };
   
   const formattedPrice = new Intl.NumberFormat('en-IN', {

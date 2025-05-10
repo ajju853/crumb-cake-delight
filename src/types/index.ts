@@ -14,7 +14,8 @@ export interface Product {
   featured?: boolean;
   new?: boolean;
   bestseller?: boolean;
-  seasonal?: boolean; // Added this property to fix the type error
+  seasonal?: boolean;
+  quantity?: number;
   dietary: {
     eggless: boolean;
     glutenFree: boolean;
@@ -44,6 +45,7 @@ export interface User {
   name: string;
   email: string;
   avatar: string;
+  orders?: Order[];
 }
 
 export type ThemeMode = 'light' | 'dark';

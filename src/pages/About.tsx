@@ -118,32 +118,6 @@ const About: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.4 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-2xl font-serif font-semibold mb-4 text-bakery-brown dark:text-bakery-cream">
-            Meet Our Team
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Our passionate team of bakers, pastry chefs, and designers work together to create the delicious treats that bring smiles to our customers' faces.
-          </p>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {['Chef Priya', 'Baker Raj', 'Designer Meera', 'Manager Arjun'].map((name, index) => (
-              <div key={index} className="text-center">
-                <div className="w-24 h-24 rounded-full bg-bakery-cream dark:bg-gray-800 mx-auto mb-4 flex items-center justify-center text-2xl font-serif">
-                  {name[0]}
-                </div>
-                <h3 className="font-medium">{name}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{name.split(' ')[0]}</p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.6 }}
           className="text-center"
         >

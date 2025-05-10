@@ -7,23 +7,36 @@ export interface Product {
   image: string;
   category: string;
   tags: string[];
-  ingredients?: string[];
+  ingredients: string[];
   occasion?: string;
-  rating?: number;
-  reviews?: number;
+  rating: number;
+  reviews: number;
   featured?: boolean;
   new?: boolean;
   bestseller?: boolean;
-  dietary?: {
-    eggless?: boolean;
-    glutenFree?: boolean;
-    vegan?: boolean;
-    sugarFree?: boolean;
-  };
+  seasonal?: boolean; // Added this property to fix the type error
+  dietary: {
+    eggless: boolean;
+    glutenFree: boolean;
+    vegan: boolean;
+    sugarFree: boolean;
+  }
 }
 
-export interface CartItem extends Product {
+export interface FilterOptions {
+  category: string[];
+  occasion: string[];
+  dietary: string[];
+  priceRange: number[];
+  sortBy: string;
+}
+
+export interface CartItem {
+  id: string;
+  name: string;
+  price: number;
   quantity: number;
+  image: string;
 }
 
 export interface User {
@@ -31,25 +44,4 @@ export interface User {
   name: string;
   email: string;
   avatar: string;
-  orders?: Order[];
-}
-
-export interface Order {
-  id: string;
-  date: string;
-  status: 'placed' | 'preparing' | 'out-for-delivery' | 'delivered';
-  items: CartItem[];
-  total: number;
-  address: string;
-  paymentMethod: string;
-}
-
-export type ThemeMode = 'light' | 'dark';
-
-export interface FilterOptions {
-  category: string[];
-  occasion: string[];
-  dietary: string[];
-  priceRange: [number, number];
-  sortBy: string;
 }

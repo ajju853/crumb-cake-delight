@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -9,13 +8,256 @@ import { products } from '@/data/products';
 import { useApp } from '@/contexts/AppContext';
 import NotFound from '@/pages/NotFound';
 
-const ProductDetail: React.FC = () => {
+interface ProductDetailProps {
+  specialEdition?: boolean;
+}
+
+const ProductDetail: React.FC<ProductDetailProps> = ({ specialEdition = false }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addToCart } = useApp();
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
   
+  // Handle special edition cakes
+  if (specialEdition) {
+    const specialId = id?.replace('special-edition-', '');
+    const index = specialId ? parseInt(specialId) - 31 : 0; // Adjust for the starting index
+    
+    const specialCakeImages = [
+      {
+        src: 'lovable-uploads/88f3bcba-7a32-4f54-8005-8d9a63995748.png',
+        title: 'Chocolate Floral Cake',
+        description: 'Decadent chocolate cake with elegant floral decorations, perfect for special occasions.'
+      },
+      {
+        src: 'lovable-uploads/31b25d0c-c5f5-46d1-ba6e-067461b1d913.png',
+        title: 'White Floral Wedding Cake',
+        description: 'Elegant white wedding cake adorned with fresh flowers, ideal for the most memorable day.'
+      },
+      {
+        src: 'lovable-uploads/b34cc02f-6b46-4298-8be2-bf6508e76af4.png',
+        title: 'Fruit-topped White Cake',
+        description: 'Light white cake topped with a generous assortment of seasonal fresh fruits and light dusting.'
+      },
+      {
+        src: 'lovable-uploads/c02d5a00-65e8-4ba3-8fec-29ace6028ec3.png',
+        title: 'Pink Drip Cake',
+        description: 'Delicate pink drip cake decorated with macarons, fresh flowers, and berries.'
+      },
+      {
+        src: 'lovable-uploads/2b974fd9-c3e4-4e32-9d5a-a7924193f2ea.png',
+        title: 'White Buttercream Floral Cake',
+        description: 'Textured white buttercream cake with fresh roses and greenery, perfect for weddings.'
+      },
+      {
+        src: 'lovable-uploads/86e2323c-241c-4657-ac5e-1a03951df4b4.png',
+        title: 'Dark Chocolate Sprinkles Cake',
+        description: 'Rich dark chocolate cake covered in chocolate sprinkles and festive decorations.'
+      },
+      {
+        src: 'lovable-uploads/74955790-1e06-4800-bacd-3f87e12be169.png',
+        title: 'Pink Double Drip Cake',
+        description: 'Stunning pink cake with dual white and dark chocolate drips, topped with fresh fruits and flowers.'
+      },
+      {
+        src: 'lovable-uploads/2d713df2-ee47-433d-a79d-a4f60e3d7e9e.png',
+        title: 'Painted Floral Cake',
+        description: 'Hand-painted floral design on white fondant with gold accents and a fresh flower topper.'
+      },
+      {
+        src: 'lovable-uploads/72260158-ef63-4842-9f73-7a941b6b7a03.png',
+        title: 'Gold Leaf Floral Cake',
+        description: 'White buttercream cake with gold leaf accents and a fresh flower arrangement topper.'
+      },
+      {
+        src: 'lovable-uploads/4d524a73-5ea6-49cb-8066-931e50a11869.png',
+        title: 'Red Berry Cake',
+        description: 'Vibrant red glaze cake topped with fresh berries, flowers, and eucalyptus leaves.'
+      },
+      {
+        src: 'lovable-uploads/f57c3e87-89a4-4398-b5af-5573354c3089.png',
+        title: 'Blue Nautical Cake',
+        description: 'Blue textured buttercream cake with a sailing ship topper, perfect for maritime celebrations.'
+      }
+    ];
+    
+    if (index >= 0 && index < specialCakeImages.length) {
+      const cake = specialCakeImages[index];
+      
+      const handleAddToCart = () => {
+        addToCart({
+          id: `special-${index + 31}`,
+          name: cake.title,
+          price: 2500,
+          image: cake.src,
+          quantity: quantity
+        });
+      };
+      
+      return (
+        <div className="container mx-auto px-4 py-8">
+          <Button 
+            variant="ghost" 
+            className="mb-6"
+            onClick={() => navigate(-1)}
+          >
+            ← Back
+          </Button>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Product Images */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="overflow-hidden rounded-lg"
+            >
+              <img 
+                src={cake.src} 
+                alt={cake.title} 
+                className="w-full h-[500px] object-cover"
+              />
+            </motion.div>
+            
+            {/* Product Info */}
+            <div className="space-y-6">
+              <div>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  <Badge variant="secondary" className="bg-purple-500 text-white">Special Edition</Badge>
+                  <Badge variant="outline">Custom Cake</Badge>
+                </div>
+                
+                <h1 className="text-3xl font-bold font-serif text-bakery-brown dark:text-bakery-cream">{cake.title}</h1>
+                
+                <div className="flex items-center mt-2">
+                  <div className="flex items-center text-amber-500">
+                    <span className="text-lg font-medium">4.9</span>
+                    <span className="ml-1">★</span>
+                    <span className="ml-1 text-gray-600 dark:text-gray-400">(Limited Edition)</span>
+                  </div>
+                </div>
+              </div>
+              
+              <p className="text-gray-600 dark:text-gray-300">{cake.description}</p>
+              
+              <div className="text-3xl font-serif font-semibold text-bakery-brown dark:text-bakery-pink">
+                ₹2,500
+              </div>
+              
+              {/* Quantity Selector */}
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-600 dark:text-gray-300">Quantity:</span>
+                <div className="flex items-center space-x-2">
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                    disabled={quantity <= 1}
+                  >
+                    -
+                  </Button>
+                  <span className="w-10 text-center">{quantity}</span>
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    onClick={() => setQuantity(q => q + 1)}
+                  >
+                    +
+                  </Button>
+                </div>
+              </div>
+              
+              <Button 
+                variant="default" 
+                size="lg"
+                className="w-full bg-bakery-brown hover:bg-bakery-light-brown text-white dark:bg-bakery-dark-pink dark:hover:bg-bakery-pink"
+                onClick={handleAddToCart}
+              >
+                Add to Cart
+              </Button>
+              
+              <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/30 rounded-md text-amber-800 dark:text-amber-200">
+                <h4 className="font-medium mb-2">Special Edition Note</h4>
+                <p className="text-sm">This cake is part of our limited edition collection. Please allow 48 hours for preparation. For custom modifications, please contact us directly.</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Product Tabs */}
+          <div className="mt-12">
+            <Tabs defaultValue="details" className="w-full">
+              <TabsList className="w-full flex">
+                <TabsTrigger value="details" className="flex-1">Details</TabsTrigger>
+                <TabsTrigger value="customization" className="flex-1">Customization</TabsTrigger>
+                <TabsTrigger value="delivery" className="flex-1">Delivery</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="details" className="p-6 bg-white dark:bg-gray-900 rounded-lg mt-4">
+                <h3 className="text-xl font-serif mb-4">Product Details</h3>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-medium">Size Options</h4>
+                    <p className="text-gray-600 dark:text-gray-300">Available in 6", 8", and 10" sizes</p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium">Perfect For</h4>
+                    <p className="text-gray-600 dark:text-gray-300">Weddings, Anniversaries, Special Events</p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium">Allergen Information</h4>
+                    <p className="text-gray-600 dark:text-gray-300">Contains dairy, eggs, wheat, and nuts. Please contact us for allergen-free options.</p>
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="customization" className="p-6 bg-white dark:bg-gray-900 rounded-lg mt-4">
+                <h3 className="text-xl font-serif mb-4">Customization Options</h3>
+                <p className="mb-4 text-gray-600 dark:text-gray-300">
+                  Our special edition cakes can be customized to suit your preferences and occasion.
+                </p>
+                <ul className="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-300">
+                  <li>Custom cake toppers</li>
+                  <li>Personalized messages</li>
+                  <li>Flavor variations</li>
+                  <li>Color adjustments</li>
+                  <li>Dietary modifications (upon request)</li>
+                </ul>
+                <p className="mt-4 text-gray-600 dark:text-gray-300">
+                  For custom requests, please contact our cake design team at least 7 days before your event.
+                </p>
+              </TabsContent>
+              
+              <TabsContent value="delivery" className="p-6 bg-white dark:bg-gray-900 rounded-lg mt-4">
+                <h3 className="text-xl font-serif mb-4">Delivery Information</h3>
+                <p className="mb-4 text-gray-600 dark:text-gray-300">
+                  We take extra care when delivering our special edition cakes to ensure they arrive in perfect condition.
+                </p>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-medium">Delivery Areas</h4>
+                    <p className="text-gray-600 dark:text-gray-300">Available within 30km of our bakery location</p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium">Timing</h4>
+                    <p className="text-gray-600 dark:text-gray-300">Delivery slots available from 9am to 7pm</p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium">Special Handling</h4>
+                    <p className="text-gray-600 dark:text-gray-300">Temperature-controlled delivery vehicles ensure your cake arrives in perfect condition</p>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      );
+    }
+    
+    return <NotFound />;
+  }
+  
+  // Original code for regular product details
   const product = products.find(p => p.id === id);
   
   if (!product) {
@@ -23,7 +265,13 @@ const ProductDetail: React.FC = () => {
   }
   
   const handleAddToCart = () => {
-    addToCart(product, quantity);
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: quantity
+    });
   };
   
   const formattedPrice = new Intl.NumberFormat('en-IN', {

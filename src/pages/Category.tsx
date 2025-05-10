@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -50,7 +49,7 @@ const Category: React.FC = () => {
       filters.category,
       filters.occasion,
       filters.dietary,
-      filters.priceRange,
+      [filters.priceRange[0], filters.priceRange[1]] as [number, number],
       filters.sortBy
     );
     
@@ -78,7 +77,7 @@ const Category: React.FC = () => {
   const updatePriceRange = (value: number[]) => {
     setFilters(prev => ({
       ...prev,
-      priceRange: [value[0], value[1]]
+      priceRange: value
     }));
   };
   

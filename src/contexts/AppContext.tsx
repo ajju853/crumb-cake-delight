@@ -1,6 +1,5 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { CartItem, Product, ThemeMode, User } from '../types';
+import { Product, CartItem, User, ThemeMode } from '../types';
 import { toast } from "@/components/ui/use-toast";
 
 interface AppContextType {

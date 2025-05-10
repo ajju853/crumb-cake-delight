@@ -45,3 +45,15 @@ export interface User {
   email: string;
   avatar: string;
 }
+
+export type ThemeMode = 'light' | 'dark';
+
+export interface Order {
+  id: string;
+  date: string;
+  status: 'placed' | 'preparing' | 'out-for-delivery' | 'delivered';
+  items: CartItem[];
+  total: number;
+  address: string;
+  paymentMethod: string;
+}
